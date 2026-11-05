@@ -30,6 +30,9 @@ redis==7.4.0
 langchain==1.2.18
 langgraph==1.1.10
 langchain-google-vertexai==3.2.3
+# embedding.py imports GoogleGenerativeAIEmbeddings at module load; it was missing here,
+# which would crash the Cloud Run image on startup. Pin to the version from your venv.
+langchain-google-genai==4.4.2
 langchain-groq==1.1.2
 langchain-community==0.4.1
 langchain-openai==1.2.1

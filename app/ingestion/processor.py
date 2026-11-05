@@ -1,6 +1,7 @@
 import os
 import sys
 import uuid
+import hashlib
 import json
 import logfire
 
@@ -14,8 +15,12 @@ from app.ingestion.loaders.html import parse_html
 from app.ingestion.loaders.text import parse_text
 from app.ingestion.chunking.splitter import chunk_text
 
-logfire.configure(service_name="enterprise-ingestion-service")
-
+# Only send traces if LOGFIRE_TOKEN is set; otherwise run quietly with no login prompt
+logfire.configure(
+    service_name="enterprise-ingestion-service",
+    token=os.getenv("LOGFIRE_TOKEN"),
+    send_to_logfire="if-token-present",
+)
 # Local folder where parsed + chunked JSON metadata is saved (replaces GCS processed bucket)
 PROCESSED_DATA_DIR = "processed_data"
 
@@ -24,6 +29,17 @@ qdrant_client = QdrantClient(
     url=settings.QDRANT_URL,
     api_key=settings.QDRANT_API_KEY,
 )
+
+
+def make_point_id(source_type: str, filename: str, chunk_index: int, chunk: str) -> str:
+    """
+    Deterministic Qdrant point id (UUID5) for one chunk.
+    The old code used uuid4(), so re-running ingestion inserted every chunk
+    again and duplicated results. With a stable id, an upsert of the same
+    chunk simply overwrites itself.
+    """
+    digest = hashlib.sha256(chunk.encode("utf-8")).hexdigest()
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, f"{source_type}/{filename}/{chunk_index}/{digest}"))
 
 
 def save_processed_locally(data: dict, source_type: str, filename: str) -> str:
@@ -78,15 +94,16 @@ def process_file(file_path: str, filename: str, source_type: str):
                 embeddings = embed_texts(chunks)
                 points = [
                     models.PointStruct(
-                        id=str(uuid.uuid4()),
+                        id=make_point_id(source_type, filename, i, chunk),
                         vector=vector,
                         payload={
                             "text": chunk,
                             "source": filename,
                             "source_type": source_type,
+                            "chunk_index": i,
                         },
                     )
-                    for chunk, vector in zip(chunks, embeddings)
+                    for i, (chunk, vector) in enumerate(zip(chunks, embeddings))
                 ]
 
                 qdrant_client.upsert(

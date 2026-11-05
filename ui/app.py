@@ -118,11 +118,11 @@ if prompt := st.chat_input("Ask about your documentation..."):
             answer_placeholder = st.empty()
             full_answer = data.get("answer", "No response.")
             
-            curr_text = ""
-            for char in full_answer:
-                curr_text += char
-                answer_placeholder.markdown(curr_text + "▌")
-                time.sleep(0.005)
+            # Reveal the answer in ~60 steps max so typing effect never takes long
+            step = max(8, len(full_answer) // 60)
+            for end in range(step, len(full_answer) + step, step):
+                answer_placeholder.markdown(full_answer[:end] + "▌")
+                time.sleep(0.01)
             
             answer_placeholder.markdown(full_answer)
             st.session_state.messages.append({"role": "assistant", "content": full_answer})
