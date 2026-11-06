@@ -33,7 +33,7 @@ async def lifespan(_: FastAPI):
 
 # Initialize FastAPI
 app = FastAPI(title="Enterprise Agentic RAG API", lifespan=lifespan)
-
+logfire.instrument_fastapi(app)
 
 class QueryRequest(BaseModel):
     # Bound user input; out-of-range values get an automatic HTTP 422.

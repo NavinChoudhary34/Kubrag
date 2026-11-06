@@ -20,8 +20,8 @@ class Settings:
 
     # --- LLM GATEWAY (PORTKEY) ---
     PORTKEY_API_KEY = os.getenv("PORTKEY_API_KEY")
-    GROQ_SLUG =  "rag"     # primary: @rag/openai/gpt-oss-120b
-    GROQ_SLUG_2 = "brag"  # fallback: @brag/openai/gpt-oss-20b
+    GROQ_SLUG =  "kubrag1"     # primary: @kubrag1/openai/gpt-oss-120b
+    GROQ_SLUG_2 = "kubrag2"  # fallback: @kubrag2/openai/gpt-oss-20b
 
     
     # --- OBSERVABILITY ---
