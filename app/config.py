@@ -20,6 +20,7 @@ class Settings:
 
     # --- LLM GATEWAY (PORTKEY) ---
     PORTKEY_API_KEY = os.getenv("PORTKEY_API_KEY")
+    PORTKEY_CONFIG_ID = os.getenv("PORTKEY_CONFIG_ID")
     GROQ_SLUG =  "kubrag1"     # primary: @kubrag1/openai/gpt-oss-120b
     GROQ_SLUG_2 = "kubrag2"  # fallback: @kubrag2/openai/gpt-oss-20b
 
