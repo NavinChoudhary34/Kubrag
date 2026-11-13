@@ -105,12 +105,20 @@ def run_pipeline(golden_dataset: dict, progress_callback=None) -> dict:
     return dataset
 
 
+
 def save_results(dataset: dict, path: str) -> None:
-    with open(path, "w") as f:
-        json.dump(dataset, f, indent=2)
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(dataset, f, indent=2, ensure_ascii=False)
+
         
         
+
 def load_golden_dataset() -> dict:
-    golden_path = os.path.join(os.path.dirname(__file__), "golden_dataset.json")
-    with open(golden_path) as f:
+    golden_path = os.path.join(
+        os.path.dirname(__file__),
+        "golden_dataset.json"
+    )
+
+    with open(golden_path, "r", encoding="utf-8") as f:
         return json.load(f)
+

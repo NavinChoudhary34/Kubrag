@@ -1,0 +1,91 @@
+
+[project]
+name = "kubrag"
+version = "0.1.0"
+description = "Enterprise Agentic RAG Application"
+requires-python = ">=3.12,<3.13"
+
+[project.optional-dependencies]
+
+local = [
+    "fastapi",
+    "uvicorn[standard]",
+    "python-dotenv",
+    "requests",
+    "streamlit",
+    "numpy",
+    "pytz",
+    "nest-asyncio",
+    "google-generativeai",
+    "langchain-google-genai",
+    "qdrant-client",
+    "flashrank",
+    "langchain",
+    "langgraph",
+    "langchain-groq",
+    "langchain-google-vertexai",
+    "langchain-community",
+    "langchain-openai",
+    "pydantic>=2.0.0",
+    "unstructured",
+    "python-pptx",
+    "python-docx",
+    "pypdf",
+    "beautifulsoup4",
+    "pdfplumber",
+    "langsmith",
+    "logfire[fastapi,requests]",
+    "loguru",
+    "nemoguardrails",
+    "langchain-nvidia-ai-endpoints",
+    "portkey-ai",
+    "ragas",
+    "deepeval",
+    "langfuse",
+    "sentence-transformers",
+]
+
+prod = [
+    "fastapi==0.136.1",
+    "uvicorn[standard]==0.46.0",
+    "python-dotenv==1.2.2",
+    "requests==2.33.1",
+    "numpy==2.4.4",
+    "pytz==2026.2",
+    "google-cloud-storage==3.10.1",
+    "google-cloud-aiplatform==1.153.1",
+    "google-cloud-documentai==3.14.0",
+    "cloud-sql-python-connector==1.20.2",
+    "pg8000==1.31.5",
+    "sqlalchemy==2.0.49",
+    "qdrant-client==1.17.1",
+    "flashrank==0.2.10",
+    "redis==7.4.0",
+    "langchain==1.2.18",
+    "langgraph==1.1.10",
+    "langchain-google-vertexai==3.2.3",
+    "langchain-google-genai==4.4.2",
+    "langchain-groq==1.1.2",
+    "langchain-community==0.4.1",
+    "langchain-openai==1.2.1",
+    "pydantic==2.13.4",
+    "nemoguardrails==0.21.0",
+    "langchain-nvidia-ai-endpoints==1.3.0",
+    "portkey-ai==2.3.0",
+    "langsmith==0.8.3",
+    "logfire[fastapi,requests]==4.32.1",
+    "loguru==0.7.3",
+    "python-pptx==1.0.2",
+    "python-docx==1.2.0",
+    "pypdf==6.11.0",
+    "beautifulsoup4==4.14.3",
+]
+
+[tool.uv]
+package = false
+conflicts = [
+    [
+        { extra = "local" },
+        { extra = "prod" },
+    ],
+]

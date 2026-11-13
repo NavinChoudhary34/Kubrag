@@ -26,8 +26,8 @@ from ragas.metrics.collections import (
 )
 
 GROQ_BASE_URL = "https://api.groq.com/openai/v1"
-JUDGE_MODEL = "llama-3.1-8b-instant"
-COOLDOWN_STANDARD = 62
+JUDGE_MODEL = "gpt-oss-120b"  # judge model is a Groq model — not a Portkey model
+COOLDOWN_STANDARD = 62  #cooldown between experiments — lets sliding TPM window recover (~3,700 tok/sample)
 COOLDOWN_MINI = 40       # between individual samples — lets sliding TPM window recover (~2,800 tok/sample)
 GENERAL_BATCH_SIZE = 1  # one sample at a time: abatch_score fires calls concurrently per sample,
                          # so batch>1 stacks multiple samples' async calls inside the same second
